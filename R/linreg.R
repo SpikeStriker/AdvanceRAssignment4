@@ -8,28 +8,10 @@
 #' @import gridExtra
 #' @importFrom ggplot2 ggplot aes geom_point
 #' @importFrom gridExtra grid.arrange
+#' @importFrom methods setClass setMethod new
 #' @export
 #' 
 options(repos = list(CRAN="https://cloud.r-project.org/"))
-install.packages(rownames(available.packages()[available.packages()[, "Priority"] %in% "recommended", ]),dependencies=TRUE,quiet=TRUE)
-
-if (!requireNamespace("methods", quietly = TRUE)) {
-  install.packages("methods")
-}
-library(methods)
-if(!require("ggplot2")) {
-  install.packages("ggplot2", dependencies = TRUE)
-  # install.packages('remotes', dependencies = TRUE)
-  # remotes::install_github("thomasp85/patchwork")
-  # remotes::install_github("tidyverse/ggplot2")
-  # install.packages(c("xtable","MASS","zoo","nlme","sandwich","lattice","lmtest","maxLik"), dependencies = TRUE)
-}
-library(ggplot2)
-if (!requireNamespace("gridExtra", quietly = TRUE)) {
-  install.packages("gridExtra")
-}
-library(gridExtra)
-
 
 linreg <- setRefClass("linreg",
                       fields=list(
