@@ -71,12 +71,21 @@ linreg <- setRefClass("linreg",
                           rownames(summary_output)<<-colnames(X)
                           colnames(summary_output)<<-c("Coefficients","Std.Error", "t-value","p-value")
                         },
-                        print = function(self.X,self.coefficients,self.formula,self.data,self.data_str,self.formula_str) {
+                        print = function(self.X,self.coefficients,self.data_str,self.formula_str) {
                           coefficient_output<-as.vector(coefficients)
                           names(coefficient_output)<-colnames(X)
-                          
-                          cat("linreg (formula =",trimws(formula_str),", data =",trimws(data_str),")\n")
-                          
+                          # cat("linreg (formula =",trimws(formula_str),", data =",trimws(data_str),")\n")
+                          cat(paste0("linreg(formula = ",
+                                     gsub("~", " ~ ",
+                                          gsub("\\+", " \\+ ",
+                                               gsub("\\.", "\\.", 
+                                                    gsub(" ", "", formula_str)))), 
+                                     ", data = ", data_str, ")"))
+                          cat(names(coefficient_output), "\n",coefficient_output)
+                        },
+                        coef = function(self.X,self.coefficients){
+                          coefficient_output<-as.vector(coefficients)
+                          names(coefficient_output)<-colnames(X)
                           cat("Coefficients: \n")
                           coefficient_output
                         },
@@ -88,10 +97,19 @@ linreg <- setRefClass("linreg",
                         },
                         summary = function(self.summary_output,self.dof,self.residual_std_error) {
                           cat(paste(colnames(summary_output), collapse = " "), "\n")
-                          apply(summary_output, 1, function(row) {
-                            cat(rownames(summary_output)[which(summary_output == row[1], arr.ind = TRUE)[1]], " ", paste(row, collapse = " "), "\n")
-                          })
-                          cat("Residual standard error: ",residual_std_error, "on ",dof," degrees of freedom")
+                          for (i in 1:nrow(summary_output)) {
+                            if (summary_output[i,4] < 0.001) {
+                              cat(rownames(summary_output)[i], summary_output[i, ],"***")
+                            } else if (summary_output[i,4] < 0.01) {
+                              cat(rownames(summary_output)[i], summary_output[i, ],"**")
+                            } else if (summary_output[i,4] < 0.05) {
+                              cat(rownames(summary_output)[i], summary_output[i, ],"*")
+                            } else {
+                              cat(rownames(summary_output)[i], summary_output[i, ])
+                            }
+                            cat("\n")
+                          }
+                          cat("Residual standard error:", residual_std_error, "on", dof, "degrees of freedom")
                         },
                         plot = function(self.data,self.y_hat,self.residuals,self.formula_str){
                           par(mfrow = c(2, 1))
