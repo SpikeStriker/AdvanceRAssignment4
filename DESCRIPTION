@@ -1,0 +1,24 @@
+Package: AdvanceRAssignment4
+Type: Package
+Title: Linear Regression using QR Decomposition
+Version: 1.0
+Date: 2024-10-02
+Author: Nisal Amasha Rajapaksha and Uday Jain
+Maintainer: Uday Jain <uday9k@gmail.com>
+Description: Implements the linear regression calculations using the QR decomposition as a RC class object.
+    generate predictions, and aggregate to monthly or annual values.
+VignetteBuilder: knitr
+Depends:
+    R(>= 3.0),
+    methods
+Imports:
+    ggplot2,
+    gridExtra
+License: MIT + file LICENSE
+RoxygenNote: 7.3.2
+Encoding: UTF-8
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
