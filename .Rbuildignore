@@ -4,3 +4,5 @@
 ^packrat/
 ^\.Rprofile$
 ^\.github$
+^doc$
+^Meta$

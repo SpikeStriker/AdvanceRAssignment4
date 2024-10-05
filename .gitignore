@@ -4,3 +4,5 @@
 .Ruserdata
 packrat/lib*/
 inst/doc
+/doc/
+/Meta/
