@@ -1,11 +1,15 @@
 ---
-title: "AdvanceRAssignment4"
+title: "Linear Regression using QR Decomposition"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{AdvanceRAssignment4}
+  %\VignetteIndexEntry{Introduction to Linear Regression using QR Decomposition}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+# Overview
+
+The `AdvanceRAssignment4` package implements linear regression using QR decomposition method. This vignette describes how to use the `linreg` function with the `iris` dataset to fit a linear regression model, inspect outputs, and generate diagnostic plots.
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -14,6 +18,60 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+## Fitting a Linear Regression Model
+
+To fit a linear regression model using the linreg function, the iris dataset will be used.
+
+```{r}
 library(AdvanceRAssignment4)
+
+# Fit the model
+model <- linreg(Petal.Length ~ Species, data = iris)
 ```
+
+## Accessing Model Coefficients
+
+You can access the model coefficients using the `coef()` method:
+
+```{r}
+# Coefficients
+model$coef()
+```
+
+## Making Predictions
+
+To obtain predictions from the model, use the `pred()` method:
+
+```{r}
+# Predictions
+predictions <- model$pred()
+```
+
+## Residuals
+
+The residuals of the model can be accessed using the `resid()` method:
+
+```{r}
+# Residuals
+residuals <- model$resid()
+```
+
+## Model Summary
+
+To get a summary of the model, use the `summary()` method:
+
+```{r}
+# Model summary
+model$summary()
+```
+
+## Generating Diagnostic Plots
+
+To visualize model diagnostics, use the `plot()` method:
+
+```{r, fig.width = 4, fig.height = 6}
+# Diagnostic plots
+model$plot()
+```
+
+This vignette offers a detailed guide on how to utilize the linreg function with the iris dataset, showcasing the comprehensive features of the AdvanceRAssignment4 package.
