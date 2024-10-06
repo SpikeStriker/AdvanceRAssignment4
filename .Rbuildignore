@@ -3,6 +3,5 @@
 ^LICENSE\.md$
 ^packrat/
 ^\.Rprofile$
-^\.github$
 ^doc$
 ^Meta$
