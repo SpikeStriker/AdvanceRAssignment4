@@ -26,7 +26,7 @@ To fit a linear regression model using the linreg function, the iris dataset wil
 library(AdvanceRAssignment4)
 
 # Fit the model
-model <- linreg(Sepal.Length ~ Sepal.Width + Petal.Length, data = iris)
+model <- linreg(Petal.Length ~ Species, data = iris)
 ```
 
 ## Accessing Model Coefficients
@@ -69,7 +69,7 @@ model$summary()
 
 To visualize model diagnostics, use the `plot()` method:
 
-```{r}
+```{r, fig.width = 4, fig.height = 6}
 # Diagnostic plots
 model$plot()
 ```
