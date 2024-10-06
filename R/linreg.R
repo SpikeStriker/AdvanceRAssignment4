@@ -99,10 +99,12 @@ linreg <- setRefClass("linreg",
                           }
                           cat("Residual standard error:", residual_std_error, "on", dof, "degrees of freedom")
                         },
-                        plot = function(self.data,self.y_hat,self.residuals,self.formula_str){
+                        plot = function(self.data,self.y_hat,self.residuals,self.formula_str, self.residual_std_error){
                           par(mfrow = c(2, 1))
-                          p1<-ggplot(data,aes(x=round(y_hat,3),y=round(residuals,3)))+geom_point(size=0.5)+stat_summary(
-                            fun=median,colour="red",geom="path",size=1)+labs(
+                          p1<-ggplot(data,aes(x=round(y_hat,3),y=round(residuals,3)))+
+                            geom_point(size=0.5)+
+                            stat_summary(fun=median,colour="red",geom="path",size=1)+
+                            labs(
                               title="Residuals vs Fitted",
                               caption=paste("lm(",trimws(formula_str),")"),
                               x="Fitted values",
@@ -110,12 +112,13 @@ linreg <- setRefClass("linreg",
                             theme(plot.title = element_text(hjust = 0.5),
                                   plot.caption = element_text(hjust = 0.5))
                           
-                          p2<-ggplot(data,aes(x=round(y_hat,3),y=round(sqrt(residuals^2),3)))+geom_point(size=0.5)+stat_summary(
-                            fun=median,colour="red",geom="path",size=1)+
+                          p2<-ggplot(data,aes(x=round(y_hat,4),y=round(sqrt(abs(residuals)/residual_std_error),4)))+
+                            geom_point(size=0.5)+
+                            stat_summary(fun=median,colour="red",geom="path",size=1)+
                             labs(title="Scale Location",
                                  caption=paste("lm(",trimws(formula_str),")"),
                               x="Fitted values",
-                              y="Standardized Residuals")+
+                              y=expression(sqrt("Standardized Residuals")))+
                             theme(plot.title = element_text(hjust = 0.5),
                                   plot.caption = element_text(hjust = 0.5))
                           grid.arrange(p1, p2, ncol=1)
