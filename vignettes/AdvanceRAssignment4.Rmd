@@ -1,6 +1,6 @@
 ---
-title: "Linear Regression using QR Decomposition"
-output: rmarkdown::html_vignette
+title: "Introduction to Linear Regression using QR Decomposition"
+output: pdf_document
 vignette: >
   %\VignetteIndexEntry{Introduction to Linear Regression using QR Decomposition}
   %\VignetteEngine{knitr::rmarkdown}
@@ -45,6 +45,7 @@ To obtain predictions from the model, use the `pred()` method:
 ```{r}
 # Predictions
 predictions <- model$pred()
+head(predictions)
 ```
 
 ## Residuals
@@ -54,6 +55,7 @@ The residuals of the model can be accessed using the `resid()` method:
 ```{r}
 # Residuals
 residuals <- model$resid()
+head(residuals)
 ```
 
 ## Model Summary
