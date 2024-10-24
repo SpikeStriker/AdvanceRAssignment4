@@ -1,7 +1,6 @@
 #' @name visualize_airport_delays
 #' @title A function to visualise mean flight delays
 #' @description A function to visualise mean flight delays across different airports using nycflights13
-#' @import nycflights13
 #' @import dplyr
 #' @import tidylog
 #' @export
@@ -14,6 +13,7 @@
 #' \url{https://nycflights13.tidyverse.org/index.html}
 
 visualize_airport_delays<-function(){
+  library("nycflights13")
   data(nycflights13)
   x<-airports %>% 
     distinct(faa,name, lat, lon, .keep_all = FALSE) %>% 
@@ -21,6 +21,7 @@ visualize_airport_delays<-function(){
                by = c("faa" = "origin")) %>%
     group_by(name, lat, lon) %>%
     dplyr::summarize(Mean = mean(dep_delay, na.rm=TRUE))
+  print(x)
   }
 
 # library("nycflights13")

@@ -13,7 +13,11 @@ Depends:
 Imports:
     ggplot2,
     gridExtra,
-    MASS
+    MASS,
+    nycflights13,
+    dplyr,
+    tidylog,
+    magrittr
 License: MIT + file LICENSE
 RoxygenNote: 7.3.2
 Encoding: UTF-8
