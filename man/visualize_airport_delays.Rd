@@ -10,8 +10,6 @@ visualize_airport_delays()
 A function to visualise mean flight delays across different airports using nycflights13
 }
 \examples{
-data("nycflights13")
-
 visualize_airport_delays()
 }
 \seealso{

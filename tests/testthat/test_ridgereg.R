@@ -26,25 +26,25 @@ test_that("print() method works", {
 
 test_that("predict() method works", {
   ridgereg_mod <- ridgereg$new(formula = Petal.Length~Sepal.Width+Sepal.Length,data=iris, lambda=1)
-  ridgereg_MASSmod <- lm.ridge(formula = Petal.Length~Sepal.Width+Sepal.Length,data=iris, lambda=1)
+  ridgereg_MASSmod <- MASS::lm.ridge(formula = Petal.Length~Sepal.Width+Sepal.Length,data=iris, lambda=1)
   expect_equal(as.matrix(ridgereg_mod$predict()),as.matrix(cbind(const=1,iris[,c("Sepal.Width","Sepal.Length")])) %*% coef(ridgereg_MASSmod))
 
   ridgereg_mod <- ridgereg$new(formula = Petal.Length~Sepal.Width+Sepal.Length-1,data=iris, lambda=1)
-  ridgereg_MASSmod <- lm.ridge(formula = Petal.Length~Sepal.Width+Sepal.Length-1,data=iris, lambda=1)
+  ridgereg_MASSmod <- MASS::lm.ridge(formula = Petal.Length~Sepal.Width+Sepal.Length-1,data=iris, lambda=1)
   expect_equal(as.matrix(ridgereg_mod$predict()),as.matrix(iris[,c("Sepal.Width","Sepal.Length")]) %*% coef(ridgereg_MASSmod))
   
   ridgereg_mod <- ridgereg$new(formula = Petal.Length~Sepal.Width+Sepal.Length,data=iris, lambda=1, qrDecomposition=TRUE)
-  ridgereg_MASSmod <- lm.ridge(formula = Petal.Length~Sepal.Width+Sepal.Length,data=iris, lambda=1)
+  ridgereg_MASSmod <- MASS::lm.ridge(formula = Petal.Length~Sepal.Width+Sepal.Length,data=iris, lambda=1)
   expect_true(all.equal(as.matrix(ridgereg_mod$predict()),
                         as.matrix(cbind(const=1,iris[,c("Sepal.Width","Sepal.Length")])) %*% coef(ridgereg_MASSmod),tolerance=0.01))
 })
 
 test_that("coef() method works", {
   ridgereg_mod <- ridgereg$new(formula = Petal.Length~Sepal.Width+Sepal.Length,data=iris, lambda=1)
-  ridgereg_MASSmod <- lm.ridge(formula = Petal.Length~Sepal.Width+Sepal.Length,data=iris, lambda=1)
+  ridgereg_MASSmod <- MASS::lm.ridge(formula = Petal.Length~Sepal.Width+Sepal.Length,data=iris, lambda=1)
   expect_true(all.equal(ridgereg_mod$coef(),ridgereg_MASSmod$coef))
   ridgereg_mod <- ridgereg$new(formula = Petal.Length~Sepal.Width+Sepal.Length-1,data=iris, lambda=1)
-  ridgereg_MASSmod <- lm.ridge(formula = Petal.Length~Sepal.Width+Sepal.Length-1,data=iris, lambda=1)
+  ridgereg_MASSmod <- MASS::lm.ridge(formula = Petal.Length~Sepal.Width+Sepal.Length-1,data=iris, lambda=1)
   expect_true(all.equal(ridgereg_mod$coef(),ridgereg_MASSmod$coef))
   ridgereg_mod <- ridgereg$new(formula = Petal.Length~Sepal.Width+Sepal.Length,data=iris, lambda=1,qrDecomposition=TRUE)
   ridgereg_MASSmod <- lm.ridge(formula = Petal.Length~Sepal.Width+Sepal.Length,data=iris, lambda=1)
