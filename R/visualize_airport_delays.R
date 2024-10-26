@@ -15,7 +15,9 @@
 #' visualize_airport_delays()
 #' @seealso
 #' \url{https://nycflights13.tidyverse.org/index.html}
-if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
+globalVariables(c("faa","name","lat","lon","dep_delay","origin","arr_delay",
+                  "dest","MeanFlightDepDelay","MeanFlightArrDelay","group","long"))
+
 visualize_airport_delays<-function(){
   dt1<-nycflights13::airports %>% 
     dplyr::distinct(faa,name, lat, lon, .keep_all = FALSE) %>% 
