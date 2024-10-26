@@ -1,8 +1,6 @@
+#' @rawNamespace import(MASS, except = select)
 data("iris")
-library("MASS")
 
-Polygon <- setRefClass("Polygon", fields = c("sides"))
-square <- Polygon$new(sides = 4)
 test_that("ridgereg rejects errounous input", {
   expect_error(ridgereg_mod <- ridgereg$new(formula = Petal.Length~Sepdsal.Width+Sepal.Length, data=iris, lambda=1))
   expect_error(ridgereg_mod <- ridgereg$new(formula = Petal.Length~Sepdsal.Width+Sepal.Length, data=irfsfdis, lambda=1))

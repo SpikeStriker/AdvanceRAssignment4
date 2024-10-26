@@ -5,7 +5,7 @@
 #' @param data Data.Frame. The data frame capturing the data.
 #' @param lambda Numeric. Captures the value of lambda.
 #' @param qrDecomposition Logical. Default=FALSE or least square estimation. Specifies if QR Decomposition is to be used for estimation.
-#' @import MASS
+#' @rawNamespace import(MASS, except = select)
 #' @import methods
 #' @importFrom methods setClass setMethod new
 #' @export

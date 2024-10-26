@@ -1,7 +1,7 @@
 #' @name visualize_airport_delays
 #' @title A function to visualise mean flight delays
 #' @description A function to visualise mean flight delays across different airports using nycflights13
-#' @import dplyr
+#' @rawNamespace import(dplyr, except = combine)
 #' @import ggplot2
 #' @import gridExtra
 #' @importFrom ggplot2 ggplot aes geom_point
