@@ -3,9 +3,6 @@
 \name{visualize_airport_delays}
 \alias{visualize_airport_delays}
 \title{A function to visualise mean flight delays}
-\usage{
-visualize_airport_delays()
-}
 \description{
 A function to visualise mean flight delays across different airports using nycflights13
 }
