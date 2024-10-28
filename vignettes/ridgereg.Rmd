@@ -1,0 +1,118 @@
+---
+title: "ridgereg"
+output: pdf_document
+vignette: >
+  %\VignetteIndexEntry{ridgereg}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(AdvanceRAssignment4)
+data("BostonHousing", package = "mlbench")
+library("caret")
+```
+
+# Data Understanding
+
+Data captures Boston Housing prices along with multiple other features of the city. 
+```{r dataUnderstanding, fig.height=7, fig.width=10}
+print(sapply(BostonHousing, class))
+featurePlot(sapply(BostonHousing[, -14],as.numeric),
+            as.numeric(BostonHousing$medv),
+            plot = "scatter", layout = c(3, 5))
+```
+
+# Data Split
+
+The dataset is split into testing and training dataset capturing 20% and 80% of 
+the data respectively. To ensure effective and un-biased training and evaluation 
+of the model, we used "createDataPartition" from "Caret" package. This ensures 
+the similar distribution of dependent is maintained across both the split 
+partitions.
+
+```{r testTainSplit}
+trainIndex <- createDataPartition(as.numeric(BostonHousing$medv), 
+                                  p = .8, 
+                                  list = FALSE, 
+                                  times = 1)
+trainData<-sapply(BostonHousing[trainIndex,],as.numeric)
+testData<-sapply(BostonHousing[-trainIndex,],as.numeric)
+```
+# Model Training
+
+Using Linear Regression Fit using Feed forward method for covariate(s) selection.
+Root Mean Squared Error (RMSE) is used to identify best model trained on 
+training data.
+
+```{r trainLinearReg_FeedForward}
+
+summary(myModel<-train(y = as.numeric(trainData[,14]), 
+                       x = as.data.frame(trainData[,-14]),
+                       'leapForward'))
+```
+Since only 4 variables are tested, I would use tuneGrid to test all variables
+
+```{r trainLinearReg_FeedForward_TuneGrid}
+summary(myModel<-train(y = as.numeric(trainData[,14]), 
+               x =trainData[,-14],
+               'leapForward',metric ="RMSE",maximize = FALSE,
+               # trControl = trainControl(method = "none"),
+               verbose =FALSE,tuneGrid = expand.grid(.nvmax = seq(1, 13))))
+```
+
+# Model Performance
+
+As observed from model iterations, the R-Square increases with increasing number
+of covariates. RMSE follows a similar increasing trend with increase in number of
+covariates. For this reason the algorithm recommends a model with all covariates.
+This is known to be true always. 
+
+However, if observed closely, one would see the rate of growth of RMSE as well 
+as R-Square decrease over time with maximum gainsobserved during addition of 
+first few covariates to form an elbow curve. This curve can helps us balance 
+between model complexity and model accuracy if required. Probably a model with 
+just 2 covariates (lstat & rm) or (percentage of lower status of the population 
+& average number of rooms per dwelling) might be sufficient to meet our goals 
+and provides a good balance between accuracy or RMSE and model complexity.
+
+```{r trainLinearReg_FeedForward_performance}
+myModel
+```
+# Evaluating model performce on Testing dataset
+We observe a very low RMSE on testing dataset when compared to that on training
+dataset, indicating over-fitting. 
+
+Probably we need to either explore a more simpler model or use an alternative 
+approach to modeling to ensure the trained model does not over fit on the 
+training data and provides similar results when tested on new data or 
+in-production.
+
+```{r trainLinearReg_FeedForward_performance_Testing}
+predictions = predict(myModel, newdata = testData[,-14])
+RMSE(predictions,testData[,14])
+```
+
+# Model Training Using ridgereg()
+
+```{r trainRidgeRegression}
+
+customRidgeReg<-list(type = "Regression",
+              library = "AdvanceRAssignment4")
+
+customRidgeReg$parameters<-data.frame(parameter=c("lambda"),
+                                      class =c("numeric"),
+                                      label = c("lambda"))
+  
+myModelRidreg<-ridgereg$new(formula=reformulate(colnames(trainData[,c(1,2,3)]),"medv"),
+                            data=as.data.frame(trainData),lambda=1)
+myModelRidreg
+```
+
