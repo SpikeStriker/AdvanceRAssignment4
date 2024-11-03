@@ -18,7 +18,10 @@ Imports:
     mapproj,
     magrittr,
     MASS,
-    dplyr
+    dplyr,
+    caret,
+    mlbench,
+    leaps
 License: MIT + file LICENSE
 RoxygenNote: 7.3.2
 Encoding: UTF-8

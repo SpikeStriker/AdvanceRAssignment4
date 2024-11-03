@@ -7,6 +7,9 @@
 #' @param qrDecomposition Logical. Default=FALSE or least square estimation. Specifies if QR Decomposition is to be used for estimation.
 #' @rawNamespace import(MASS, except = select)
 #' @import methods
+#' @import caret
+#' @import mlbench
+#' @import leaps
 #' @importFrom methods setClass setMethod new
 #' @export
 #' 
@@ -57,11 +60,13 @@ ridgereg <- setRefClass("ridgereg",
                         formula_str="character",
                         X="matrix",
                         y="numeric",
+                        xs="matrix",
                         scales="numeric",
                         coefficients="matrix",
                         unScaledCoefficients="vector",
                         residuals="matrix",
-                        y_hat="matrix"
+                        y_hat="matrix",
+                        newData="data.frame"
                       ),
                       methods = list(
                         initialize=function(formula,data,lambda,qrDecomposition=FALSE){
@@ -74,15 +79,15 @@ ridgereg <- setRefClass("ridgereg",
                           X<<-model.matrix(formula,data)
                           p<-ncol(X)
                           n<-nrow(X)
-                          xs<-X
+                          xs<<-X
                           if(attr(terms(formula), "intercept")){
                             p<-p-1
                             X<<-X[,-1]
-                            xs<-(X-rep(colMeans(X), rep(n, p)))
+                            xs<<-(X-rep(colMeans(X), rep(n, p)))
                           }
                           variance<-((apply(xs^2,2,sum)))/n
                           scales<<-sqrt(variance)
-                          xs<-xs/matrix(scales,nrow = n,ncol = p,byrow = TRUE)
+                          xs<<-xs/matrix(scales,nrow = n,ncol = p,byrow = TRUE)
                           if(qrDecomposition){
                             QR<-qr(xs)
                             Q<-qr.Q(QR)
@@ -119,8 +124,13 @@ ridgereg <- setRefClass("ridgereg",
                           cat("Coefficients: \n")
                           coefficient_output
                           },
-                        predict = function(self.y_hat){
-                          as.vector(y_hat)
+                        predict = function(self.y_hat,self.formula,self.unScaledCoefficients,newData=NULL){
+                          if(is.null(newData)){
+                            as.vector(y_hat)
+                          }else{
+                            nd<-model.matrix(formula,newData)
+                            as.vector(nd%*%as.matrix(myModelRidreg$unScaledCoefficients))
+                            }
                           },
                         resid = function(self.residuals) {
                           residuals
