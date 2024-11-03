@@ -127,39 +127,57 @@ print(paste0("RMSE on Training Data with (Lambda=2): ",RMSE(myModelRidreg$predic
 ```
 # Optmising hyperparameter value for lambda using 10-fold cross-validation on the training set
 
-<!-- ```{r trainLinearReg_10Fold} -->
-<!-- customRidgeReg<-list(type = "Regression", -->
-<!--               library = "AdvanceRAssignment4") -->
-<!-- customRidgeReg$parameters<-data.frame(parameter=c("lambda"), -->
-<!--                                       class =c("numeric"), -->
-<!--                                       label = c("lambda")) -->
-<!-- customRidgeReg$grid<-function(x=NULL,y=NULL,len=NULL,search="grid"){ -->
-<!--   if(search=="grid"){ -->
-<!--     out<-as.data.frame(seq(from=0,by=1,length.out=len),col.names="lambda") -->
-<!--   }else{ -->
-<!--     out<-as.data.frame(runif(len,0,101),col.names="lambda") -->
-<!--   } -->
-<!--   out -->
-<!-- } -->
-<!-- customRidgeReg$fit<-function(x, y, param, last, ...){ -->
-<!--    ridgereg$new(formula=reformulate(colnames(as.data.frame(x),colnames(y))), -->
-<!--                             data=as.data.frame(cbind(x,y)), -->
-<!--                             lambda=param$lambda) -->
-<!-- } -->
-<!-- customRidgeReg$predict <- function(modelFit,newdata,preProc=NULL,submodels=NULL){ -->
-<!--   modelFit$predict(newdata) -->
-<!-- } -->
-<!-- customRidgeReg$prob<-function(){NULL} -->
-<!-- customRidgeReg$sort<-function(x) x[order(x$lambda),] -->
+```{r trainLinearReg_10Fold}
+customRidgeReg<-list(type = "Regression",
+              library = "AdvanceRAssignment4")
+customRidgeReg$parameters<-data.frame(parameter=c("lambda"),
+                                      class =c("numeric"),
+                                      label = c("lambda"))
+customRidgeReg$grid<-function(x=NULL,y=NULL,len=NULL,search="grid"){
+  if(search=="grid"){
+    out<-as.data.frame(seq(from=0,by=1,length.out=len),col.names="lambda")
+  }else{
+    out<-as.data.frame(runif(len,0,101),col.names="lambda")
+  }
+  return(out)
+}
+customRidgeReg$fit<-function(x, y, param, last, ...){
+  if(is.null(colnames(y))){
+    data<-as.data.frame(cbind(x,y))
+    modelNew<-ridgereg$new(formula=reformulate(colnames(as.data.frame(x)),"y"),
+                            data=data,
+                            lambda=param$lambda)
+   return(modelNew)
+  }else{
+    modelNew<-ridgereg$new(formula=reformulate(colnames(as.data.frame(x),colnames(y))),
+                            data=as.data.frame(cbind(x,y)),
+                            lambda=param$lambda)
+    return(modelNew)
+  }
+}
+customRidgeReg$predict <- function(modelFit, newdata, preProc = NULL, submodels = NULL){
+  print(dim(newdata))
+  print(2131231)
+  retult<-modelFit$predict(newData=newdata)
+  cat(head(retult))
+  print(213312321)
+  return(retult)
+  
+}
+customRidgeReg$prob<-function(){NULL}
+customRidgeReg$sort<-function(x) x[order(x$lambda),]
 
-<!-- train(y=as.numeric(trainData[,14]), -->
-<!--       x=trainData[,-14], -->
-<!--       method=customRidgeReg, -->
-<!--       verbose =TRUE, -->
-<!--       tuneGrid = expand.grid(.nvmax = seq(1, 13))) -->
+train(y=as.numeric(trainData[,14]),
+      x=trainData[,-14],
+      method=customRidgeReg,
+      verbose =TRUE,
+      
+      tuneGrid = expand.grid(lambda = seq(5, 13)))
 
 
 
-<!-- print(paste0("RMSE on Training Data with (Lambda=1): ",RMSE(myModelRidreg$predict(),trainData[,14]))) -->
-
-<!-- ``` -->
+print(paste0("RMSE on Training Data with (Lambda=1): ",RMSE(myModelRidreg$predict(),trainData[,14])))
+myModelRidreg<-ridgereg$new(formula=reformulate(colnames(trainData[,-14]),"medv"),
+                            data=as.data.frame(trainData),lambda=2)
+myModelRidreg$predict(newData=as.data.frame(trainData))
+```
