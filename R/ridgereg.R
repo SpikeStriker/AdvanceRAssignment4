@@ -110,7 +110,7 @@ ridgereg <- setRefClass("ridgereg",
                             }
                           residuals<<-(y-y_hat)
                           },
-                        show = function(self.unScaledCoefficients,self.data_str,self.formula_str) {
+                        print = function(self.unScaledCoefficients,self.data_str,self.formula_str) {
                           cat(paste0("ridgereg(formula = ",
                                      gsub("~", " ~ ",
                                           gsub("\\+", " \\+ ",
