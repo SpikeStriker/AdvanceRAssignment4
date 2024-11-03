@@ -16,6 +16,8 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(AdvanceRAssignment4)
+library(mlbench)
+library(leaps)
 data("BostonHousing", package = "mlbench")
 library("caret")
 ```
@@ -48,7 +50,7 @@ testData<-sapply(BostonHousing[-trainIndex,],as.numeric)
 ```
 # Model Training
 
-Using Linear Regression Fit using Feed forward method for covariate(s) selection.
+Using Linear Regression Fit with Feed forward method for covariate(s) selection.
 Root Mean Squared Error (RMSE) is used to identify best model trained on 
 training data.
 
@@ -111,8 +113,53 @@ customRidgeReg$parameters<-data.frame(parameter=c("lambda"),
                                       class =c("numeric"),
                                       label = c("lambda"))
   
-myModelRidreg<-ridgereg$new(formula=reformulate(colnames(trainData[,c(1,2,3)]),"medv"),
+myModelRidreg<-ridgereg$new(formula=reformulate(colnames(trainData[,-14]),"medv"),
                             data=as.data.frame(trainData),lambda=1)
-myModelRidreg
-```
 
+print(paste0("RMSE on Training Data with (Lambda=1): ",RMSE(myModelRidreg$predict(),trainData[,14])))
+
+
+myModelRidreg<-ridgereg$new(formula=reformulate(colnames(trainData[,-14]),"medv"),
+                            data=as.data.frame(trainData),lambda=2)
+
+print(paste0("RMSE on Training Data with (Lambda=2): ",RMSE(myModelRidreg$predict(),trainData[,14])))
+
+```
+# Optmising hyperparameter value for lambda using 10-fold cross-validation on the training set
+
+<!-- ```{r trainLinearReg_10Fold} -->
+<!-- customRidgeReg<-list(type = "Regression", -->
+<!--               library = "AdvanceRAssignment4") -->
+<!-- customRidgeReg$parameters<-data.frame(parameter=c("lambda"), -->
+<!--                                       class =c("numeric"), -->
+<!--                                       label = c("lambda")) -->
+<!-- customRidgeReg$grid<-function(x=NULL,y=NULL,len=NULL,search="grid"){ -->
+<!--   if(search=="grid"){ -->
+<!--     out<-as.data.frame(seq(from=0,by=1,length.out=len),col.names="lambda") -->
+<!--   }else{ -->
+<!--     out<-as.data.frame(runif(len,0,101),col.names="lambda") -->
+<!--   } -->
+<!--   out -->
+<!-- } -->
+<!-- customRidgeReg$fit<-function(x, y, param, last, ...){ -->
+<!--    ridgereg$new(formula=reformulate(colnames(as.data.frame(x),colnames(y))), -->
+<!--                             data=as.data.frame(cbind(x,y)), -->
+<!--                             lambda=param$lambda) -->
+<!-- } -->
+<!-- customRidgeReg$predict <- function(modelFit,newdata,preProc=NULL,submodels=NULL){ -->
+<!--   modelFit$predict(newdata) -->
+<!-- } -->
+<!-- customRidgeReg$prob<-function(){NULL} -->
+<!-- customRidgeReg$sort<-function(x) x[order(x$lambda),] -->
+
+<!-- train(y=as.numeric(trainData[,14]), -->
+<!--       x=trainData[,-14], -->
+<!--       method=customRidgeReg, -->
+<!--       verbose =TRUE, -->
+<!--       tuneGrid = expand.grid(.nvmax = seq(1, 13))) -->
+
+
+
+<!-- print(paste0("RMSE on Training Data with (Lambda=1): ",RMSE(myModelRidreg$predict(),trainData[,14]))) -->
+
+<!-- ``` -->
