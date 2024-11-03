@@ -130,7 +130,7 @@ ridgereg <- setRefClass("ridgereg",
                             as.vector(y_hat)
                           }else{
                             nd<-model.matrix(formula,newData)
-                            as.vector(nd%*%as.matrix(myModelRidreg$unScaledCoefficients))
+                            as.vector(nd%*%as.matrix(unScaledCoefficients))
                             }
                           },
                         resid = function(self.residuals) {
