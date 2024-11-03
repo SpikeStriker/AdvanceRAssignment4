@@ -73,6 +73,7 @@ ridgereg <- setRefClass("ridgereg",
                           stopifnot(all(all.vars(formula) %in% colnames(data)))
                           stopifnot(is.data.frame(data))
                           stopifnot((is.numeric(lambda))&&(is.atomic(lambda)))
+                          formula<<-as.formula(formula)
                           data_str <<- deparse(substitute(data))
                           formula_str <<- deparse(substitute(formula))
                           y<<-data[[attr(terms(formula),which="variables")[2][[1]]]]
@@ -109,7 +110,7 @@ ridgereg <- setRefClass("ridgereg",
                             }
                           residuals<<-(y-y_hat)
                           },
-                        print = function(self.unScaledCoefficients,self.data_str,self.formula_str) {
+                        show = function(self.unScaledCoefficients,self.data_str,self.formula_str) {
                           cat(paste0("ridgereg(formula = ",
                                      gsub("~", " ~ ",
                                           gsub("\\+", " \\+ ",
