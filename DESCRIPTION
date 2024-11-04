@@ -3,7 +3,7 @@ Type: Package
 Title: Linear and Ridge Regression using QR Decomposition
 Version: 1.0
 Date: 2024-10-02
-Author: Nisal Amasha Rajapaksha and Uday Jain
+Author: Nisal Amashan Rajapaksha and Uday Jain
 Maintainer: Uday Jain <uday9k@gmail.com>
 Description: Implements the linear regression and ridge regression calculations using the QR decomposition and/or least square as a RC class object. Generate predictions, and aggregate to monthly or annual values.
 VignetteBuilder: knitr
