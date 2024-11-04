@@ -106,61 +106,111 @@ RMSE(predictions,testData[,14])
 
 ```{r trainRidgeRegression}
 
+customRidgeReg<-list(type = "Regression",
+              library = "AdvanceRAssignment4")
+customRidgeReg$parameters<-data.frame(parameter=c("lambda"),
+                                      class =c("numeric"),
+                                      label = c("lambda"))
+customRidgeReg$grid<-function(x=NULL,y=NULL,len=NULL,search="grid"){
+  if(search=="grid"){
+    out<-as.data.frame(seq(from=0,by=1,length.out=len),col.names="lambda")
+  }else{
+    out<-as.data.frame(runif(len,0,101),col.names="lambda")
+  }
+  return(out)
+}
+customRidgeReg$fit<-function(x, y, param, last, ...){
+  if(is.null(colnames(y))){
+    inputData<-as.data.frame(cbind(x,y))
+    modelNew<-ridgereg$new(formula=reformulate(colnames(as.data.frame(x)),"y"),
+                            data=inputData,
+                            lambda=param$lambda)
+   return(modelNew)
+  }else{
+    modelNew<-ridgereg$new(formula=reformulate(colnames(as.data.frame(x),colnames(y))),
+                            data=as.data.frame(cbind(x,y)),
+                            lambda=param$lambda)
+    return(modelNew)
+  }
+}
+customRidgeReg$predict <- function(modelFit, newdata, preProc = NULL, submodels = NULL){
+  predictions<-as.vector(as.matrix(cbind(const=1,newdata))%*%as.matrix(modelFit$unScaledCoefficients))
+  return(as.data.frame(predictions))
 
+}
+customRidgeReg$prob<-function(){NULL}
+customRidgeReg$sort<-function(x) x[order(x$lambda),]
+
+myGridModel<-train(y=as.numeric(trainData[,14]),
+                    x=trainData[,-14],
+                    method=customRidgeReg,
+                    verbose =TRUE,
+                    tuneGrid = expand.grid(lambda = seq(0, 13)))
+myGridModel
 ```
 # Optmising hyperparameter value for lambda using 10-fold cross-validation on the training set
 
 ```{r trainLinearReg_10Fold}
-# customRidgeReg<-list(type = "Regression",
-#               library = "AdvanceRAssignment4")
-# customRidgeReg$parameters<-data.frame(parameter=c("lambda"),
-#                                       class =c("numeric"),
-#                                       label = c("lambda"))
-# customRidgeReg$grid<-function(x=NULL,y=NULL,len=NULL,search="grid"){
-#   if(search=="grid"){
-#     out<-as.data.frame(seq(from=0,by=1,length.out=len),col.names="lambda")
-#   }else{
-#     out<-as.data.frame(runif(len,0,101),col.names="lambda")
-#   }
-#   return(out)
-# }
-# customRidgeReg$fit<-function(x, y, param, last, ...){
-#   if(is.null(colnames(y))){
-#     inputData<-as.data.frame(cbind(x,y))
-#     modelNew<-ridgereg$new(formula=reformulate(colnames(as.data.frame(x)),"y"),
-#                             data=inputData,
-#                             lambda=param$lambda)
-#    return(modelNew)
-#   }else{
-#     modelNew<-ridgereg$new(formula=reformulate(colnames(as.data.frame(x),colnames(y))),
-#                             data=as.data.frame(cbind(x,y)),
-#                             lambda=param$lambda)
-#     return(modelNew)
-#   }
-# }
-# customRidgeReg$predict <- function(modelFit, newdata, preProc = NULL, submodels = NULL){
-#   retult<-modelFit$predict(newData=as.data.frame(newdata))
-#   
-#   print(dim(retult))
-#   print(213312321)
-#   return(as.data.frame(retult))
-# 
-# }
-# customRidgeReg$prob<-function(){NULL}
-# customRidgeReg$sort<-function(x) x[order(x$lambda),]
-# 
-# train(y=as.numeric(trainData[,14]),
-#       x=trainData[,-14],
-#       method=customRidgeReg,
-#       verbose =TRUE,
-# 
-#       tuneGrid = expand.grid(lambda = seq(5, 13)))
-# 
-# 
-# 
-# print(paste0("RMSE on Training Data with (Lambda=1): ",RMSE(myModelRidreg$predict(),trainData[,14])))
-# myModelRidreg<-ridgereg$new(formula=reformulate(colnames(trainData[,-14]),"medv"),
-#                             data=as.data.frame(trainData),lambda=2)
-# myModelRidreg$predict(newData=as.data.frame(trainData))
-# myModelRidreg$predict()
+customRidgeReg<-list(type = "Regression",
+              library = "AdvanceRAssignment4")
+customRidgeReg$parameters<-data.frame(parameter=c("lambda"),
+                                      class =c("numeric"),
+                                      label = c("lambda"))
+customRidgeReg$grid<-function(x=NULL,y=NULL,len=NULL,search="grid"){
+  if(search=="grid"){
+    out<-as.data.frame(seq(from=0,by=1,length.out=len),col.names="lambda")
+  }else{
+    out<-as.data.frame(runif(len,0,101),col.names="lambda")
+  }
+  return(out)
+}
+customRidgeReg$fit<-function(x, y, param, last, ...){
+  if(is.null(colnames(y))){
+    inputData<-as.data.frame(cbind(x,y))
+    modelNew<-ridgereg$new(formula=reformulate(colnames(as.data.frame(x)),"y"),
+                            data=inputData,
+                            lambda=param$lambda)
+   return(modelNew)
+  }else{
+    modelNew<-ridgereg$new(formula=reformulate(colnames(as.data.frame(x),colnames(y))),
+                            data=as.data.frame(cbind(x,y)),
+                            lambda=param$lambda)
+    return(modelNew)
+  }
+}
+customRidgeReg$predict <- function(modelFit, newdata, preProc = NULL, submodels = NULL){
+  predictions<-as.vector(as.matrix(cbind(const=1,newdata))%*%as.matrix(modelFit$unScaledCoefficients))
+  return(as.data.frame(predictions))
+
+}
+customRidgeReg$prob<-function(){NULL}
+customRidgeReg$sort<-function(x) x[order(x$lambda),]
+control <- trainControl(search = "grid", method="repeatedcv", number=10)
+modelCV<-train(y=as.numeric(trainData[,14]),
+                x=trainData[,-14],
+                method=customRidgeReg,
+                verbose =TRUE,
+                trControl= control,
+                tuneGrid = expand.grid(lambda = seq(0, 13)))
+modelCV
+```
+# Performace Evaluation
+
+It can be observed that Ridge regression outperforms the linear regression.
+We also observe that both ridge regression models, one trained using grid search 
+across multiple values of lamda but on a single dataset and other trained using 
+cross-validation provide similar RMSE. However, the later (trained using cross 
+validation) provides a much simpler model with lambda=7 and also shows lower 
+deviation among the RMSE values across test and training dataset. Consequently,
+it is a recommended option among the alternatives.
+
+```{r performance Evaluation}
+testDataY <- predict(modelCV, newdata = testData[,-14])
+cat(paste("The custom Ridge Regression model trained using 10-Fold ","\n",
+            "cross validation resulted in a RMSE of ", 
+            round(RMSE(testDataY$predictions,testData[,14]),3)))
+testDataY <- predict(myGridModel, newdata = testData[,-14])
+cat(paste("The custom Ridge Regression model trained for multiple ","\n",
+            "values of lambda resulted in a RMSE of ", 
+            round(RMSE(testDataY$predictions,testData[,14]),3)))
 ```
