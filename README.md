@@ -1,6 +1,29 @@
-[![R-CMD-check.yaml](https://github.com/SpikeStriker/AdvanceRAssignment4/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/SpikeStriker/AdvanceRAssignment4/actions/workflows/R-CMD-check.yaml)
-# 732A94 Advance R
+# AdvanceRAssignment4
 
-## Group 13: Uday Jain (udaja983) & Nisal Amasha Rajapaksha (nisra674)
+## Repository Summary
+R package or R Shiny application repository focused on statistical modelling and API integration
+with full package structure. Contains top-level folders: .github, R, man, packrat, tests, vignettes.
+Captures dependency and environment requirements for reproducibility. Existing README or
+documentation is present; this update improves the project summary and structure description.
 
-### Assignment 4: A linear regression package in R
+## Key Contents
+### Directories
+- `.github`
+- `R`
+- `man`
+- `packrat`
+- `tests`
+- `vignettes`
+
+### Files
+- `.DS_Store`
+- `.Rbuildignore`
+- `.gitignore`
+- `DESCRIPTION`
+- `LICENSE`
+- `LICENSE.md`
+- `NAMESPACE`
+- `githubproject.Rproj`
+
+## Usage
+- Build or install the R package using the `DESCRIPTION` metadata.
