@@ -1,29 +1,14 @@
 # AdvanceRAssignment4
 
-## Repository Summary
-R package or R Shiny application repository focused on statistical modelling and API integration
-with full package structure. Contains top-level folders: .github, R, man, packrat, tests, vignettes.
-Captures dependency and environment requirements for reproducibility. Existing README or
-documentation is present; this update improves the project summary and structure description.
+Detailed repository summary generated automatically from available manifests and READMEs. Please review and refine where needed.
 
-## Key Contents
-### Directories
-- `.github`
-- `R`
-- `man`
-- `packrat`
-- `tests`
-- `vignettes`
+## Problem statements addressed
 
-### Files
-- `.DS_Store`
-- `.Rbuildignore`
-- `.gitignore`
-- `DESCRIPTION`
-- `LICENSE`
-- `LICENSE.md`
-- `NAMESPACE`
-- `githubproject.Rproj`
+- Describe the key problems this repo solves (e.g., reproducible experiments, teaching labs, algorithm implementations).
 
-## Usage
-- Build or install the R package using the `DESCRIPTION` metadata.
+
+
+## How to contribute
+
+- Open issues for bugs or feature requests.
+- Create PRs against `main` with a clear description.
