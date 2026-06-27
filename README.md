@@ -1,29 +1,34 @@
 # AdvanceRAssignment4
 
-## Repository Summary
-R package or R Shiny application repository focused on statistical modelling and API integration
-with full package structure. Contains top-level folders: .github, R, man, packrat, tests, vignettes.
-Captures dependency and environment requirements for reproducibility. Existing README or
-documentation is present; this update improves the project summary and structure description.
+An advanced R assignment repository for regression analysis, airport delay visualization, and reproducible reporting.
 
-## Key Contents
-### Directories
-- `.github`
+## Repository structure
+
+Top-level folders in this repository:
+
 - `R`
 - `man`
-- `packrat`
 - `tests`
 - `vignettes`
 
-### Files
-- `.DS_Store`
-- `.Rbuildignore`
-- `.gitignore`
-- `DESCRIPTION`
-- `LICENSE`
-- `LICENSE.md`
-- `NAMESPACE`
-- `githubproject.Rproj`
+## What is included
 
-## Usage
-- Build or install the R package using the `DESCRIPTION` metadata.
+### Functions
+
+- Linear and ridge regression utilities and airport delay visualization tools.
+
+### Vignettes
+
+- Narrative analysis documents for assignment results and methodology.
+
+### Testing
+
+- Test coverage for assignment functions and expected outputs.
+
+## How to use this repo
+
+Browse the top-level folders to explore course-specific assignments, notebooks, reports, and datasets.
+
+## How to contribute
+
+If this repository is collaborative, open issues for corrections or improvements and create pull requests with clear descriptions.
